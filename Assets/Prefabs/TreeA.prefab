@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2972363687739584639}
   - component: {fileID: 938586088709271223}
+  - component: {fileID: 2736564814844567296}
   m_Layer: 0
   m_Name: TreeA
   m_TagString: Untagged
@@ -55,6 +56,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9119192, y: 2.5652452, z: 0.919127}
   m_Center: {x: 0, y: 1.0115035, z: 0}
+--- !u!114 &2736564814844567296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4504933021639887020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030900d293517894aa2873f3d731821f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deadTreeMesh: {fileID: 881712916471266690}
+  revivedTreeMesh: {fileID: 2695137091434712167}
+  health: 0
+  reviveHealth: 3
+  shakeDuration: 0.1
+  shakeMagnitude: 0.2
 --- !u!1001 &71231758668497107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115,6 +134,11 @@ PrefabInstance:
 --- !u!4 &538085139093448504 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6dcf410d90aa99d428d772e386b6eda4, type: 3}
+  m_PrefabInstance: {fileID: 71231758668497107}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &881712916471266690 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6dcf410d90aa99d428d772e386b6eda4, type: 3}
   m_PrefabInstance: {fileID: 71231758668497107}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3001197485902213430
@@ -178,6 +202,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a7f49a9453fb9049ad70190e8b7070d, type: 3}
+--- !u!1 &2695137091434712167 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4a7f49a9453fb9049ad70190e8b7070d, type: 3}
+  m_PrefabInstance: {fileID: 3001197485902213430}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3327276439958607581 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4a7f49a9453fb9049ad70190e8b7070d, type: 3}

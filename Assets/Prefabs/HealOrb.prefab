@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 6875b75386bf9f24b8458de79afbde2d, type: 2}
+    - target: {fileID: 5949266409695010534, guid: a8ab068584a4a84438c12811dfffa73b, type: 3}
+      propertyPath: orbType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6459133638498033489, guid: a8ab068584a4a84438c12811dfffa73b, type: 3}
       propertyPath: m_Name
       value: HealOrb
