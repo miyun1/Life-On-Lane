@@ -18,6 +18,8 @@ public class OrbScript : MonoBehaviour
     {
         // Check for Tree
         TreeBehavior tree = collision.gameObject.GetComponent<TreeBehavior>();
+        EnemyAi enemy = collision.gameObject.GetComponent<EnemyAi>();
+
         if (tree != null)
         {
             if (orbType == OrbType.Heal)
@@ -28,22 +30,22 @@ public class OrbScript : MonoBehaviour
             {
                 tree.ReceiveDamage(effectAmount);
             }
-            // Optionally, you could allow damage orbs to affect trees if needed
             Destroy(gameObject);
             return;
         }
 
-        //// Check for Enemy
-        //EnemyBehavior enemy = collision.gameObject.GetComponent<EnemyBehavior>();
-        //if (enemy != null)
-        //{
-        //    if (orbType == OrbType.Damage)
-        //    {
-        //        enemy.ReceiveDamage(effectAmount);
-        //    }
-        //    // Optionally, you could allow heal orbs to affect enemies if needed
-        //    Destroy(gameObject);
-        //    return;
-        //}
+        if (enemy != null)
+        {
+            if (orbType == OrbType.Heal)
+            {
+                enemy.ReceiveHeal(effectAmount);
+            }
+            if (orbType == OrbType.Damage)
+            {
+                enemy.ReceiveDamage(effectAmount);
+            }
+            Destroy(gameObject);
+            return;
+        }
     }
 }
