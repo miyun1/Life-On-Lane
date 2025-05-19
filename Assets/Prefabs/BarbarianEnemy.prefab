@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 4
   attackRange: 1.5
-  attackCooldown: 1.5
+  attackCooldown: 1
   health: 1
 --- !u!1001 &7219575236120565426
 PrefabInstance:

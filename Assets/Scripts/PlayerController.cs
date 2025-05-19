@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
+    [Header("Player Stats")]
     public float moveSpeed = 5f;
 
     [Header("Aiming")]

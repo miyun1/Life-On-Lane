@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour
 {
     public GameObject[] enemyPrefabs;
     public float spawnInterval = 3f;  // Time between spawns
+    public int maxEnemies = 5;       // Maximum number of enemies allowed
 
     private Transform[] spawnPoints;
 
@@ -34,6 +35,10 @@ public class Spawner : MonoBehaviour
     void SpawnEnemy()
     {
         if (enemyPrefabs.Length == 0 || spawnPoints.Length == 0) return;
+
+        // Check current enemy count
+        int currentEnemyCount = FindObjectsOfType<EnemyAi>().Length;
+        if (currentEnemyCount >= maxEnemies) return;
 
         // Pick a random enemy prefab
         GameObject prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];

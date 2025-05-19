@@ -11,7 +11,6 @@ public class EnemyAi : MonoBehaviour
 
     private Rigidbody rb;
     private Animator animator;
-    private Transform player;
     private TreeBehavior targetTree;
     private float lastAttackTime = -999f;
     private bool isDead = false;
@@ -20,7 +19,7 @@ public class EnemyAi : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        SetIdle();
     }
 
     void FixedUpdate()
@@ -31,35 +30,32 @@ public class EnemyAi : MonoBehaviour
             return;
         }
 
-        // If we have a target tree, check if it's still revived
-        if (targetTree == null || targetTree.health < targetTree.reviveHealth)
+        // If the current target tree is dead, reset to idle and clear target
+        if (targetTree != null && targetTree.health <= 0)
+        {
+            targetTree = null;
+            SetIdle();
+        }
+
+        // Find a living tree if needed
+        if (targetTree == null)
         {
             targetTree = FindNearestRevivedTree();
         }
 
-        Transform target = null;
-        if (targetTree != null)
+        // If we have a valid target tree, proceed
+        if (targetTree != null && targetTree.health > 0)
         {
-            target = targetTree.transform;
-        }
-        else if (player != null)
-        {
-            target = player;
-        }
-
-        if (target != null)
-        {
-            float dist = Vector3.Distance(transform.position, target.position);
+            float dist = Vector3.Distance(transform.position, targetTree.transform.position);
 
             if (dist > attackRange)
             {
-                // Move towards target
-                Vector3 dir = (target.position - transform.position).normalized;
+                // Running towards tree
+                Vector3 dir = (targetTree.transform.position - transform.position).normalized;
                 rb.velocity = new Vector3(dir.x, rb.velocity.y, dir.z) * moveSpeed;
-                animator.SetBool("isRunning", true);
-                animator.SetBool("isIdle", false);
+                SetRunning();
 
-                // Face the target
+                // Face the target tree
                 if (dir != Vector3.zero)
                 {
                     Quaternion lookRot = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
@@ -68,9 +64,9 @@ public class EnemyAi : MonoBehaviour
             }
             else
             {
+                // In melee stance
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
-                animator.SetBool("isRunning", false);
-                animator.SetBool("isIdle", true);
+                SetMeleeStance();
 
                 if (Time.time - lastAttackTime > attackCooldown)
                 {
@@ -78,19 +74,18 @@ public class EnemyAi : MonoBehaviour
                     lastAttackTime = Time.time;
 
                     // Apply attack effect
-                    if (targetTree != null && targetTree.health >= targetTree.reviveHealth)
+                    if (targetTree != null && targetTree.health > 0)
                     {
                         targetTree.ReceiveDamage(1);
                     }
-                    // If attacking player, implement player damage logic here
                 }
             }
         }
         else
         {
+            // No valid tree, idle
             rb.velocity = new Vector3(0, rb.velocity.y, 0);
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isIdle", true);
+            SetIdle();
         }
     }
 
@@ -101,7 +96,7 @@ public class EnemyAi : MonoBehaviour
         float minDist = float.MaxValue;
         foreach (var tree in trees)
         {
-            if (tree != null && tree.health >= tree.reviveHealth)
+            if (tree != null && tree.health > 0)
             {
                 float dist = Vector3.Distance(transform.position, tree.transform.position);
                 if (dist < minDist)
@@ -136,5 +131,27 @@ public class EnemyAi : MonoBehaviour
         rb.velocity = Vector3.zero;
         animator.SetTrigger("Death");
         Destroy(gameObject, 2f); // Destroy after death animation
+    }
+
+    // Animation helpers
+    void SetIdle()
+    {
+        animator.SetBool("isIdle", true);
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttacking", false);
+    }
+
+    void SetRunning()
+    {
+        animator.SetBool("isIdle", false);
+        animator.SetBool("isRunning", true);
+        animator.SetBool("isAttacking", false);
+    }
+
+    void SetMeleeStance()
+    {
+        animator.SetBool("isIdle", false);
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isAttacking", true);
     }
 }
