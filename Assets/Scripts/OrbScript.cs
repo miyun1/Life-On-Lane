@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class OrbScript : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class OrbScript : MonoBehaviour
             if (orbType == OrbType.Heal)
             {
                 tree.ReceiveHeal(effectAmount);
+                
             }
             if (orbType == OrbType.Damage)
             {

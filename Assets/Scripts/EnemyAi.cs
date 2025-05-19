@@ -37,13 +37,13 @@ public class EnemyAi : MonoBehaviour
             SetIdle();
         }
 
-        // Find a living tree if needed
+        // Only find a new target if we don't have one
         if (targetTree == null)
         {
-            targetTree = FindNearestRevivedTree();
+            targetTree = FindNearestFullyRevivedTree();
         }
 
-        // If we have a valid target tree, proceed
+        // If we have a target, keep attacking until it's dead
         if (targetTree != null && targetTree.health > 0)
         {
             float dist = Vector3.Distance(transform.position, targetTree.transform.position);
@@ -89,14 +89,14 @@ public class EnemyAi : MonoBehaviour
         }
     }
 
-    TreeBehavior FindNearestRevivedTree()
+    TreeBehavior FindNearestFullyRevivedTree()
     {
         TreeBehavior[] trees = FindObjectsOfType<TreeBehavior>();
         TreeBehavior nearest = null;
         float minDist = float.MaxValue;
         foreach (var tree in trees)
         {
-            if (tree != null && tree.health > 0)
+            if (tree != null && tree.health >= tree.reviveHealth)
             {
                 float dist = Vector3.Distance(transform.position, tree.transform.position);
                 if (dist < minDist)
@@ -128,7 +128,7 @@ public class EnemyAi : MonoBehaviour
     void Die()
     {
         isDead = true;
-        rb.velocity = Vector3.zero;
+        //rb.velocity = Vector3.zero;
         animator.SetTrigger("Death");
         Destroy(gameObject, 2f); // Destroy after death animation
     }

@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TreeB
       objectReference: {fileID: 0}
+    - target: {fileID: 8771917696989083891, guid: b9dc4ca00f025f74c95c41ba506556ba, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 881712916471266690, guid: b9dc4ca00f025f74c95c41ba506556ba, type: 3}
