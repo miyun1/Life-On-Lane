@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -19,31 +18,46 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button quitButton;
     [SerializeField] private Button homeButton;
 
+    private GameManager gameManager;
+
     void Start()
     {
         // Assign button listeners if buttons are set
         if (restartButton != null) restartButton.onClick.AddListener(OnRestart);
         if (quitButton != null) quitButton.onClick.AddListener(OnQuit);
         if (homeButton != null) homeButton.onClick.AddListener(OnHome);
+
+        // Find the GameManager in the scene
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     void Update()
     {
-        if (timerText != null && GameManager.Instance != null)
+        if (gameManager == null)
+            gameManager = FindObjectOfType<GameManager>();
+
+        if (gameManager == null)
+            return;
+
+        // Timer
+        if (timerText != null)
         {
-            float timer = GameManager.Instance.TimeLeft;
+            float timer = gameManager.TimeLeft;
             int minutes = Mathf.FloorToInt(timer / 60f);
             int seconds = Mathf.FloorToInt(timer % 60f);
             timerText.text = $"Time: {minutes:00}:{seconds:00}";
         }
 
-        if (treeCountText != null && GameManager.Instance != null)
+        // Tree revived percentage
+        if (treeCountText != null)
         {
-            treeCountText.text = $"Tree Revived: {GameManager.Instance.RevivedTreePercent:F0}%";
+            treeCountText.text = $"Tree Revived: {ResultData.revivedTreeCount} ({ResultData.revivedTreePercent:F0}%)";
         }
-        if (enemyCountText != null && GameManager.Instance != null)
+
+        // Enemy downed count
+        if (enemyCountText != null)
         {
-            enemyCountText.text = $"Enemy Downed: {GameManager.Instance.EnemiesKilled}";
+            enemyCountText.text = $"Enemy Downed: {ResultData.enemiesKilled}";
         }
     }
 
@@ -51,22 +65,21 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("GameScene");
-        GameManager.Instance.ResetGame();
+        // No need to call ResetGame() here, as a new GameManager will be created in the new scene
     }
 
     public void OnRestart()
     {
-        GameManager.Instance.ResetGame();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // No need to call ResetGame() here, as a new GameManager will be created in the new scene
     }
 
     public void OnHome()
     {
-        
         Time.timeScale = 1f;
         SceneManager.LoadScene("MenuScene");
-        GameManager.Instance.ResetGame();
+        // No need to call ResetGame() here, as a new GameManager will be created in the new scene
     }
 
     public void OnQuit()

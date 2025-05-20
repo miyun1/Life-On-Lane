@@ -11,13 +11,14 @@ public class TreeBehavior : MonoBehaviour
     [Header("Health Settings")]
     public int health = 0;
     public int reviveHealth = 3;
+    public bool isDead;
 
     [Header("Shake Settings")]
     public float shakeDuration = 0.2f;
     public float shakeMagnitude = 0.2f;
 
-    private bool isRevived = false;
     private Vector3 originalPosition;
+    public bool isRevived = false;
 
     void Start()
     {
@@ -34,8 +35,12 @@ public class TreeBehavior : MonoBehaviour
         if (health >= reviveHealth)
         {
             health = reviveHealth;
-            isRevived = true;
-            UpdateTreeVisual();
+            if (!isRevived)
+            {
+                isRevived = true;
+                GameManager.totalTreeRevived++;
+                UpdateTreeVisual();
+            }
         }
         StartCoroutine(Shake());
     }
@@ -48,8 +53,12 @@ public class TreeBehavior : MonoBehaviour
         if (health <= 0)
         {
             health = 0;
-            isRevived = false;
-            UpdateTreeVisual();
+            if (isRevived)
+            {
+                isRevived = false;
+                GameManager.totalTreeRevived--;
+                UpdateTreeVisual();
+            }
         }
         StartCoroutine(Shake());
     }

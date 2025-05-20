@@ -1,30 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TimerScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("UI Reference")]
+    [SerializeField] private TextMeshProUGUI timerText;
 
-    // Update is called once per frame
     void Update()
     {
-        if (timer > 0f)
+        if (timerText != null && GameManager.Instance != null)
         {
-            timer -= Time.deltaTime;
+            float timer = GameManager.Instance.TimeLeft;
+            int minutes = Mathf.FloorToInt(timer / 60f);
+            int seconds = Mathf.FloorToInt(timer % 60f);
+            timerText.text = $"Time: {minutes:00}:{seconds:00}";
         }
-
-        if (timer <= 0f)
-        {
-            timer = 0f;
-            gameEnded = true;
-            GoToResultScene();
-            return;
-        }
-        UpdateRevivedTrees();
     }
 }

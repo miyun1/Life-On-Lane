@@ -545,6 +545,7 @@ GameObject:
   - component: {fileID: 368317620}
   - component: {fileID: 368317621}
   - component: {fileID: 368317622}
+  - component: {fileID: 368317623}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -582,7 +583,7 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 6816880134925180442, guid: 22b884570f7141347b1693ade2887482, type: 3}
   spawnInterval: 3
-  maxEnemies: 3
+  maxEnemies: 4
 --- !u!114 &368317622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,11 +601,24 @@ MonoBehaviour:
   - {fileID: 8793090894490040695, guid: 641e2a3d070f8564b84e651e90e44fe4, type: 3}
   - {fileID: 4370172781990199542, guid: 4e34ed33494ef2b42a557dd8441ed01c, type: 3}
   terrain: {fileID: 936754782}
-  numberOfTrees: 15
+  numberOfTrees: 18
   checkRadius: 2
   treeLayerMask:
     serializedVersion: 2
     m_Bits: 320
+--- !u!114 &368317623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368317617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecba4f40be485d34f9d683cc54fc27a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerText: {fileID: 824541974}
 --- !u!1001 &459864089
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1882,7 +1896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fee0ecbdc8d5ea48a3d51893c6d85cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameDuration: 60
+  gameDuration: 45
 --- !u!4 &1017283725
 Transform:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private float timer;
 
     [Header("Tree Tracking")]
+    public static int totalTreeRevived = 0;
     private int totalTrees;
     private int revivedTrees;
 
@@ -21,15 +22,14 @@ public class GameManager : MonoBehaviour
     private bool gameEnded = false;
 
     // Data to carry to result scene
-    public float RevivedTreePercent => totalTrees == 0 ? 0 : (revivedTrees / (float)totalTrees) * 100f;
+    public float RevivedTreePercent => totalTrees == 0 ? 0 : ((float)GameManager.totalTreeRevived / totalTrees) * 100f;
     public int EnemiesKilled => enemiesKilled;
     public float TimeLeft => Mathf.Max(0, timer);
+    public int RevivedTreeCount => GameManager.totalTreeRevived;
 
     void Awake()
     {
-        // Singleton pattern (per scene)
         Instance = this;
-        // No DontDestroyOnLoad here!
     }
 
     void Start()
@@ -68,10 +68,11 @@ public class GameManager : MonoBehaviour
         int count = 0;
         foreach (var tree in FindObjectsOfType<TreeBehavior>())
         {
-            if (tree.health >= tree.reviveHealth)
+            if (tree.isRevived)
                 count++;
         }
         revivedTrees = count;
+        Debug.Log(totalTreeRevived);
     }
 
     public void AddEnemyKill()
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
         gameEnded = false;
         timer = gameDuration;
         enemiesKilled = 0;
+        totalTreeRevived = 0;
         revivedTrees = 0;
         CountTotalTrees();
     }
@@ -91,6 +93,7 @@ public class GameManager : MonoBehaviour
     void StoreResultsAndGoToResultScene()
     {
         ResultData.revivedTreePercent = RevivedTreePercent;
+        ResultData.revivedTreeCount = RevivedTreeCount;
         ResultData.enemiesKilled = EnemiesKilled;
         SceneManager.LoadScene("ResultScene");
     }
@@ -100,5 +103,6 @@ public class GameManager : MonoBehaviour
 public static class ResultData
 {
     public static float revivedTreePercent;
+    public static int revivedTreeCount;
     public static int enemiesKilled;
 }

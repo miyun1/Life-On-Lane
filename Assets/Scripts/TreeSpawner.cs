@@ -50,7 +50,7 @@ public class TreeSpawner : MonoBehaviour
                 {
                     GameObject prefab = treePrefabs[Random.Range(0, treePrefabs.Length)];
                     GameObject tree = Instantiate(prefab, treePosition, Quaternion.identity);
-                    tree.layer = LayerMask.NameToLayer("Trees"); // Ensure spawned tree is on the correct layer
+                    //tree.layer = LayerMask.NameToLayer("Trees"); // Ensure spawned tree is on the correct layer
                     spawned++;
                 }
             }
