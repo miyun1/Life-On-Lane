@@ -52,13 +52,13 @@ public class EnemyAi : MonoBehaviour
             {
                 // Running towards tree
                 Vector3 dir = (targetTree.transform.position - transform.position).normalized;
-                rb.velocity = new Vector3(dir.x, rb.velocity.y, dir.z) * moveSpeed;
+                rb.velocity = new Vector3(dir.x, dir.y, dir.z) * moveSpeed;
                 SetRunning();
 
                 // Face the target tree
                 if (dir != Vector3.zero)
                 {
-                    Quaternion lookRot = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+                    Quaternion lookRot = Quaternion.LookRotation(new Vector3(dir.x, dir.y, dir.z));
                     transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 0.2f);
                 }
             }
