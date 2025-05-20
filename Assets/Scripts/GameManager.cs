@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance; // Singleton for easy access
 
     [Header("Game Settings")]
-    public float gameDuration = 60f; // 1 minute
+    public float gameDuration = 60f;
     private float timer;
 
     [Header("Tree Tracking")]
@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     [Header("Enemy Tracking")]
     private int enemiesKilled;
 
+    private bool gameEnded = false;
+
     // Data to carry to result scene
     public float RevivedTreePercent => totalTrees == 0 ? 0 : (revivedTrees / (float)totalTrees) * 100f;
     public int EnemiesKilled => enemiesKilled;
@@ -25,39 +27,39 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // Singleton pattern
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // Singleton pattern (per scene)
+        Instance = this;
+        // No DontDestroyOnLoad here!
     }
 
     void Start()
     {
+        gameEnded = false;
         timer = gameDuration;
         CountTotalTrees();
     }
 
     void Update()
     {
-        timer -= Time.deltaTime;
+        if (gameEnded) return;
+
+        if (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+        }
+
         if (timer <= 0f)
         {
             timer = 0f;
-            GoToResultScene();
+            gameEnded = true;
+            StoreResultsAndGoToResultScene();
+            return;
         }
         UpdateRevivedTrees();
     }
 
     void CountTotalTrees()
     {
-        // Assumes all trees have the TreeBehavior script
         totalTrees = FindObjectsOfType<TreeBehavior>().Length;
     }
 
@@ -70,7 +72,6 @@ public class GameManager : MonoBehaviour
                 count++;
         }
         revivedTrees = count;
-        Debug.Log(revivedTrees);
     }
 
     public void AddEnemyKill()
@@ -78,12 +79,20 @@ public class GameManager : MonoBehaviour
         enemiesKilled++;
     }
 
-    void GoToResultScene()
+    public void ResetGame()
     {
-        // Store data in a static class or use PlayerPrefs for cross-scene data
+        gameEnded = false;
+        timer = gameDuration;
+        enemiesKilled = 0;
+        revivedTrees = 0;
+        CountTotalTrees();
+    }
+
+    void StoreResultsAndGoToResultScene()
+    {
         ResultData.revivedTreePercent = RevivedTreePercent;
         ResultData.enemiesKilled = EnemiesKilled;
-        SceneManager.LoadScene("ResultScene"); // Change to your result scene name
+        SceneManager.LoadScene("ResultScene");
     }
 }
 

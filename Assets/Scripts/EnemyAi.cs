@@ -115,6 +115,7 @@ public class EnemyAi : MonoBehaviour
         health -= amount;
         if (health <= 0)
         {
+            GameManager.Instance.AddEnemyKill();
             Die();
         }
     }
